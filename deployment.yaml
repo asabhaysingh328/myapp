@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: nginx-demo
+  namespace: cicd-demo
+
+spec:
+  replicas: 10
+
+  selector:
+    matchLabels:
+      app: nginx-demo
+
+  template:
+    metadata:
+      labels:
+        app: nginx-demo
+
+    spec:
+      containers:
+
+      - name: nginx-demo
+
+        image: sslcloud946/myapp:latest
+
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 80
