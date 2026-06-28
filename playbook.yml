@@ -1,0 +1,27 @@
+---
+- name: Deploy myapp to Kubernetes
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Apply Kubernetes Deployment
+      k8s:
+        kubeconfig: "{{ lookup('env','HOME') }}/.kube/config"
+        state: present
+        namespace: cicd-demo
+        src: deployment.yaml
+
+    - name: Apply Kubernetes Service
+      k8s:
+        kubeconfig: "{{ lookup('env','HOME') }}/.kube/config"
+        state: present
+        namespace: cicd-demo
+        src: service.yaml
+
+    - name: Verify Pods
+      command: kubectl get pods -n cicd-demo
+      register: pod_output
+
+    - name: Show Pod Status
+      debug:
+        var: pod_output.stdout
