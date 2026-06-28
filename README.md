@@ -100,3 +100,66 @@ Your repo: **asabhaysingh328/myapp [(github.com in Bing)](https://www.bing.com/s
 - **Kubernetes (Minikube)** → Deployment environment.  
 
 ---
+## Symbols Description for Jenkins File 
+
+Got it, Abhay — let’s decode the highlighted symbols in your Jenkins pipeline script:
+
+---
+
+## 🔹 Triple Single Quotes (`''' ... '''`)
+- In Groovy (and Jenkins pipeline), triple quotes are used for **multi‑line strings**.
+- Example:
+  ```groovy
+  sh '''
+  kubectl get ns cicd-demo || kubectl create namespace cicd-demo
+  '''
+  ```
+- This lets you write shell commands across multiple lines without worrying about escaping characters.
+- It’s especially useful when you want to run several commands in one `sh` block.
+
+---
+
+## 🔹 Double Pipe (`||`)
+- This is a **logical OR operator** in shell scripting.
+- Meaning: run the second command **only if the first one fails**.
+- Example:
+  ```bash
+  kubectl get ns cicd-demo || kubectl create namespace cicd-demo
+  ```
+  - If the namespace exists → `kubectl get ns cicd-demo` succeeds, so the second command is skipped.
+  - If the namespace doesn’t exist → the first command fails, so `kubectl create namespace cicd-demo` runs.
+
+---
+
+## 🔹 Backslash (`\`)
+- Used in shell scripts to **continue a command onto the next line**.
+- Example:
+  ```bash
+  kubectl get deploy nginx-demo -n cicd-demo || \
+  kubectl create deployment nginx-demo1 --image=nginx -n cicd-demo
+  ```
+- Here, the backslash tells the shell: “this command continues on the next line.”
+- It’s just for readability — you could write it all on one line, but splitting makes it easier to read.
+
+---
+
+## 🔹 Double Dash (`--`)
+- In `kubectl` commands, `--` introduces **flags/options**.
+- Example:
+  ```bash
+  kubectl create deployment nginx-demo1 --image=nginx -n cicd-demo
+  ```
+  - `--image=nginx` → specifies which container image to use.
+  - `-n cicd-demo` → shorthand for `--namespace cicd-demo`.
+
+---
+
+✅ So in summary:
+- `''' ... '''` → multi‑line string in Groovy.  
+- `||` → run second command if first fails.  
+- `\` → line continuation.  
+- `--` → flag/option for a command.  
+
+---
+
+
