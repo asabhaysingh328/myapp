@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        KUBECONFIG   = "$HOME/.kube/config"
+        REPO_URL     = "https://github.com/asabhaysingh328/myapp.git"
+        APP_NAME     = "myapp"
+        NAMESPACE    = "cicd-demo"
+        DOCKER_IMAGE = "asabhaysingh328/asabhaysingh328:${BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: "${REPO_URL}"
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t ${APP_NAME}:${BUILD_NUMBER} ."
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh """
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    docker tag ${APP_NAME}:${BUILD_NUMBER} ${DOCKER_IMAGE}
+                    docker push ${DOCKER_IMAGE}
+                    """
+                }
+            }
+        }
+
+        stage('Deploy with Ansible') {
+            steps {
+                // Run your playbook that applies deployment.yaml and service.yaml
+                sh "ansible-playbook playbook.yml -i hosts.ini --extra-vars 'docker_image=${DOCKER_IMAGE}'"
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh "kubectl get pods -n ${NAMESPACE} -o wide"
+            }
+        }
+    }
+}
