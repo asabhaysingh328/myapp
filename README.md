@@ -89,7 +89,6 @@ These stages confirm the app is running, scale it to 10 pods, restart it safely,
 - Jenkins pulls from GitHub at the start of every pipeline run.
 - Any commit to `main` can trigger a new build/deploy cycle.
 
-Your repo: **asabhaysingh328/myapp [(github.com in Bing)](https://www.bing.com/search?q="https%3A%2F%2Fgithub.com%2Fasabhaysingh328%2Fmyapp")** is a fork of another sample app, and it contains the Dockerfile and app code needed for this pipeline.
 
 ---
 
@@ -101,9 +100,6 @@ Your repo: **asabhaysingh328/myapp [(github.com in Bing)](https://www.bing.com/s
 
 ---
 ## Symbols Description for Jenkins File 
-
-Got it, Abhay — let’s decode the highlighted symbols in your Jenkins pipeline script:
-
 ---
 
 ## 🔹 Triple Single Quotes (`''' ... '''`)
